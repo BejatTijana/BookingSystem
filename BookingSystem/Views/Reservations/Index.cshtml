@@ -1,0 +1,96 @@
+@model BookingSystem.ViewModels.MyReservationsViewModel
+@{
+    ViewBag.Title = "My reservations";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="form-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="validation-summary">@TempData["Error"]</div>
+}
+
+<h1>My reservations</h1>
+
+<section class="filter-bar">
+    @using (Html.BeginForm("Index", "Reservations", FormMethod.Get))
+    {
+        @Html.EnumDropDownListFor(m => m.StatusFilter, "All statuses", new { @class = "form-input" })
+        <button type="submit" class="btn-primary">Filter</button>
+    }
+</section>
+
+@if (!Model.Items.Any())
+{
+    <p class="no-results">
+        @if (Model.StatusFilter.HasValue)
+        {
+            <text>No reservations match the selected status.</text>
+        }
+        else
+        {
+            <text>You have no reservations.</text>
+        }
+    </p>
+}
+else
+{
+    <table class="res-table">
+        <thead>
+            <tr>
+                <th>Accommodation</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>Guests</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var it in Model.Items)
+            {
+                <tr>
+                    <td>@it.AccommodationName</td>
+                    <td>@it.Reservation.CheckInDate</td>
+                    <td>@it.Reservation.CheckOutDate</td>
+                    <td>@it.Reservation.NumberOfGuests</td>
+                    <td>@it.Reservation.TotalPrice.ToString("0.00")</td>
+                    <td><span class="status-badge status-@(it.Reservation.Status.ToString().ToLower())">@it.Reservation.Status</span></td>
+                    <td>
+                        <div class="row-actions">
+                        @if (it.CanCancel)
+                        {
+                            using (Html.BeginForm("Cancel", "Reservations", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@it.Reservation.Id" />
+                                <button type="submit" class="btn-cancel">Cancel</button>
+                            }
+                        }
+                        @if (it.Reservation.Status == BookingSystem.Models.ReservationStatus.Completed)
+                        {
+                            if (it.ReviewId == null)
+                            {
+                                <a class="btn-details" href="@Url.Action("Create", "Reviews", new { accommodationId = it.Reservation.AccommodationId })">Leave review</a>
+                            }
+                            else
+                            {
+                                <a class="btn-details" href="@Url.Action("Edit", "Reviews", new { id = it.ReviewId })">Edit review</a>
+                                using (Html.BeginForm("Delete", "Reviews", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@it.ReviewId" />
+                                    <button type="submit" class="btn-cancel">Delete review</button>
+                                }
+                            }
+                        }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

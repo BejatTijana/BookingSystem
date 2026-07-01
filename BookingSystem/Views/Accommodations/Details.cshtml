@@ -1,0 +1,89 @@
+@model BookingSystem.ViewModels.AccommodationDetailsViewModel
+@{
+    ViewBag.Title = Model.Accommodation.Name;
+    var a = Model.Accommodation;
+    var img = string.IsNullOrEmpty(Model.Accommodation.Image) ? "placeholder.jpg" : Model.Accommodation.Image;
+}
+
+<section class="detail-card">
+    <img class="detail-image"
+         src="@Url.Content("~/Content/images/" + img)"
+         alt="@a.Name"
+         onerror="this.onerror=null;this.src='@Url.Content("~/Content/images/placeholder.jpg")';" />
+    <div class="detail-body">
+        <h1>@a.Name</h1>
+        <p class="detail-meta">@a.City &middot; @a.Type &middot; @a.Address</p>
+        <p class="detail-desc">@a.Description</p>
+        <ul class="detail-facts">
+            <li><strong>Price per night:</strong> @a.PricePerNight.ToString("0.00")</li>
+            <li><strong>Max guests:</strong> @a.MaxGuests</li>
+            <li><strong>Posted:</strong> @a.PostingDate</li>
+        </ul>
+    </div>
+</section>
+
+@if (Model.CanReserve)
+{
+    <section class="reserve-card">
+        <h2>Make a reservation</h2>
+        @using (Html.BeginForm("Reserve", "Accommodations", FormMethod.Post, new { novalidate = "novalidate" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "validation-summary" })
+            @Html.HiddenFor(m => m.Reservation.AccommodationId)
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Reservation.CheckInDate)
+                @Html.EditorFor(m => m.Reservation.CheckInDate, new { htmlAttributes = new { @class = "form-input" } })
+                @Html.ValidationMessageFor(m => m.Reservation.CheckInDate, "", new { @class = "field-error" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Reservation.CheckOutDate)
+                @Html.EditorFor(m => m.Reservation.CheckOutDate, new { htmlAttributes = new { @class = "form-input" } })
+                @Html.ValidationMessageFor(m => m.Reservation.CheckOutDate, "", new { @class = "field-error" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Reservation.NumberOfGuests)
+                @Html.TextBoxFor(m => m.Reservation.NumberOfGuests, new { @class = "form-input", type = "number", min = "1", max = a.MaxGuests })
+                @Html.ValidationMessageFor(m => m.Reservation.NumberOfGuests, "", new { @class = "field-error" })
+            </div>
+            <button type="submit" class="btn-primary">Reserve</button>
+        }
+    </section>
+}
+else
+{
+    <section class="reserve-card">
+        <p class="reserve-note">Log in as a guest to make a reservation.</p>
+    </section>
+}
+
+<section class="reviews-card">
+    <h2>Reviews</h2>
+    @if (Model.AverageRating.HasValue)
+    {
+        <p class="reviews-avg">Average rating: @Model.AverageRating.Value.ToString("0.0") / 5 (@Model.ApprovedReviews.Count)</p>
+    }
+    @if (Model.ApprovedReviews.Count == 0)
+    {
+        <p class="no-results">No reviews yet.</p>
+    }
+    else
+    {
+        foreach (var r in Model.ApprovedReviews)
+        {
+            <div class="review-item">
+                @if (!string.IsNullOrEmpty(r.Image))
+                {
+                    <img class="review-image"
+                         src="@Url.Content("~/Content/images/" + r.Image)"
+                         alt="review image"
+                         onerror="this.onerror=null;this.src='@Url.Content("~/Content/images/placeholder.jpg")';" />
+                }
+                <div class="review-head"><strong>@r.Title</strong> <span class="review-rating">@r.Rating / 5</span></div>
+                <p class="review-content">@r.Content</p>
+                <p class="review-author">by @r.ReviewerUsername</p>
+            </div>
+        }
+    }
+</section>

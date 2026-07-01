@@ -1,0 +1,114 @@
+@model BookingSystem.ViewModels.HostAccommodationsViewModel
+@{
+    ViewBag.Title = "My objects";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="form-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="validation-summary">@TempData["Error"]</div>
+}
+
+<h1>My objects</h1>
+
+<section class="filter-bar">
+    @using (Html.BeginForm("Index", "HostAccommodations", FormMethod.Get))
+    {
+        var availOptions = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "", Text = "All", Selected = !Model.AvailabilityFilter.HasValue },
+            new SelectListItem { Value = "true", Text = "Available", Selected = Model.AvailabilityFilter == true },
+            new SelectListItem { Value = "false", Text = "Unavailable", Selected = Model.AvailabilityFilter == false }
+        };
+        @Html.DropDownList("available", availOptions, new { @class = "form-input" })
+        <input type="hidden" name="sortBy" value="@Model.SortBy" />
+        <input type="hidden" name="sortDir" value="@Model.SortDir" />
+        <button type="submit" class="btn-primary">Filter</button>
+    }
+    <a class="btn-primary" href="@Url.Action("Create")">Add new accommodation</a>
+</section>
+
+@if (!Model.Items.Any())
+{
+    <p class="no-results">
+        @if (Model.AvailabilityFilter.HasValue)
+        {
+            <text>No accommodations match the current filter.</text>
+        }
+        else
+        {
+            <text>You have no accommodations yet.</text>
+        }
+    </p>
+}
+else
+{
+    <table class="res-table">
+        <thead>
+            <tr>
+                <th>
+                    <a href="@Url.Action("Index", new { available = Model.AvailabilityFilter, sortBy = "name", sortDir = (Model.SortBy == "name" && Model.SortDir == "asc") ? "desc" : "asc" })">
+                        Name@(Model.SortBy == "name" ? (Model.SortDir == "asc" ? " (asc)" : " (desc)") : "")
+                    </a>
+                </th>
+                <th>Type</th>
+                <th>City</th>
+                <th>
+                    <a href="@Url.Action("Index", new { available = Model.AvailabilityFilter, sortBy = "price", sortDir = (Model.SortBy == "price" && Model.SortDir == "asc") ? "desc" : "asc" })">
+                        Price@(Model.SortBy == "price" ? (Model.SortDir == "asc" ? " (asc)" : " (desc)") : "")
+                    </a>
+                </th>
+                <th>
+                    <a href="@Url.Action("Index", new { available = Model.AvailabilityFilter, sortBy = "date", sortDir = (Model.SortBy == "date" && Model.SortDir == "asc") ? "desc" : "asc" })">
+                        Posted@(Model.SortBy == "date" ? (Model.SortDir == "asc" ? " (asc)" : " (desc)") : "")
+                    </a>
+                </th>
+                <th>Available</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Type</td>
+                    <td>@item.City</td>
+                    <td>@item.PricePerNight.ToString("0.00")</td>
+                    <td>@item.PostingDate</td>
+                    <td>
+                        @if (item.IsAvailable)
+                        {
+                            <span class="status-badge status-available">Available</span>
+                        }
+                        else
+                        {
+                            <span class="status-badge status-unavailable">Unavailable</span>
+                        }
+                    </td>
+                    <td>
+                        <div class="row-actions">
+                            <a class="btn-details" href="@Url.Action("Edit", new { id = item.Id })">Edit</a>
+                            @using (Html.BeginForm("Delete", "HostAccommodations", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.Id" />
+                                if (item.IsAvailable)
+                                {
+                                    <button type="submit" class="btn-cancel">Delete</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn-cancel" disabled="disabled" title="Unavailable accommodations cannot be deleted.">Delete</button>
+                                }
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

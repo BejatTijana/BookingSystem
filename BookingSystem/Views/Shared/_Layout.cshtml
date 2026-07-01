@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - BookingSystem</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a class="brand" href="@Url.Content("~/")">BookingSystem</a>
+                @if (Session["Username"] != null)
+                {
+                    <span class="nav-greeting">Welcome, @Session["Username"]</span>
+                }
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    @if (Session["Username"] != null)
+                    {
+                        <li>@Html.ActionLink("Profile", "Index", "Profile")</li>
+                        if (Session["Role"] != null && (BookingSystem.Models.Role)Session["Role"] == BookingSystem.Models.Role.Guest)
+                        {
+                            <li>@Html.ActionLink("My reservations", "Index", "Reservations")</li>
+                        }
+                        else if (Session["Role"] != null && (BookingSystem.Models.Role)Session["Role"] == BookingSystem.Models.Role.Host)
+                        {
+                            <li>@Html.ActionLink("My objects", "Index", "HostAccommodations")</li>
+                        }
+                        else if (Session["Role"] != null && (BookingSystem.Models.Role)Session["Role"] == BookingSystem.Models.Role.Admin)
+                        {
+                            <li>@Html.ActionLink("Users", "Index", "AdminUsers")</li>
+                            <li>@Html.ActionLink("All objects", "Index", "AdminAccommodations")</li>
+                            <li>@Html.ActionLink("All reservations", "Index", "AdminReservations")</li>
+                            <li>@Html.ActionLink("Reviews", "Index", "AdminReviews")</li>
+                        }
+                        <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Login", "Login", "Account")</li>
+                        <li>@Html.ActionLink("Register", "Register", "Account")</li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 BookingSystem - Online Reservation System</p>
+        </div>
+    </footer>
+</body>
+</html>

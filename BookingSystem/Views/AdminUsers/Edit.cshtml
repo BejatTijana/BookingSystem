@@ -1,0 +1,64 @@
+@model BookingSystem.ViewModels.EditUserViewModel
+@{
+    ViewBag.Title = "Edit user";
+}
+
+<section class="form-card">
+    <h1>Edit user</h1>
+
+    <div class="profile-row"><span class="profile-label">Username</span><span class="profile-value">@Model.Username</span></div>
+    <div class="profile-row"><span class="profile-label">Role</span><span class="profile-value">@Model.Role</span></div>
+
+    @using (Html.BeginForm("Edit", "AdminUsers", new { username = Model.Username }, FormMethod.Post, new { novalidate = "novalidate" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "validation-summary" })
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.FirstName)
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-input" })
+            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "field-error" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.LastName)
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-input" })
+            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "field-error" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-input" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "field-error" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.DateOfBirth)
+            @Html.EditorFor(m => m.DateOfBirth, new { htmlAttributes = new { @class = "form-input" } })
+            @Html.ValidationMessageFor(m => m.DateOfBirth, "", new { @class = "field-error" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Gender)
+            @Html.EnumDropDownListFor(m => m.Gender, new { @class = "form-input" })
+            @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "field-error" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.NewPassword)
+            @Html.PasswordFor(m => m.NewPassword, new { @class = "form-input" })
+            @Html.ValidationMessageFor(m => m.NewPassword, "", new { @class = "field-error" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmNewPassword)
+            @Html.PasswordFor(m => m.ConfirmNewPassword, new { @class = "form-input" })
+            @Html.ValidationMessageFor(m => m.ConfirmNewPassword, "", new { @class = "field-error" })
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">Save changes</button>
+            <a class="btn-secondary" href="@Url.Action("Index")">Cancel</a>
+        </div>
+    }
+</section>

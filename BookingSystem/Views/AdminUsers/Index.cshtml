@@ -1,0 +1,113 @@
+@using BookingSystem.Models
+@model BookingSystem.ViewModels.AdminUsersViewModel
+@{
+    ViewBag.Title = "Users";
+    string bornFromStr = Model.BornFrom.HasValue ? Model.BornFrom.Value.ToString("yyyy-MM-dd") : null;
+    string bornToStr = Model.BornTo.HasValue ? Model.BornTo.Value.ToString("yyyy-MM-dd") : null;
+    var roleOptions = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "",      Text = "All roles", Selected = !Model.RoleFilter.HasValue },
+        new SelectListItem { Value = "Guest", Text = "Guest",     Selected = Model.RoleFilter == Role.Guest },
+        new SelectListItem { Value = "Host",  Text = "Host",      Selected = Model.RoleFilter == Role.Host }
+    };
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="form-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="validation-summary">@TempData["Error"]</div>
+}
+
+<h1>Users</h1>
+
+<section class="filter-bar filter-bar-wide">
+    @using (Html.BeginForm("Index", "AdminUsers", FormMethod.Get))
+    {
+        <input type="text" name="firstName" class="form-input" placeholder="First name" value="@Model.SearchFirstName" />
+        <input type="text" name="lastName"  class="form-input" placeholder="Last name"  value="@Model.SearchLastName" />
+        <input type="date" name="bornFrom"  class="form-input" value="@bornFromStr" />
+        <input type="date" name="bornTo"    class="form-input" value="@bornToStr" />
+        @Html.DropDownList("role", roleOptions, new { @class = "form-input" })
+        <input type="hidden" name="sortBy"  value="@Model.SortBy" />
+        <input type="hidden" name="sortDir" value="@Model.SortDir" />
+        <button type="submit" class="btn-primary">Search</button>
+        <a class="btn-secondary" href="@Url.Action("Index")">Clear</a>
+    }
+    <a class="btn-primary" href="@Url.Action("CreateHost")">Add host</a>
+</section>
+
+@if (!Model.Items.Any())
+{
+    <p class="no-results">
+        @{
+            var hasFilter = !string.IsNullOrWhiteSpace(Model.SearchFirstName)
+                         || !string.IsNullOrWhiteSpace(Model.SearchLastName)
+                         || Model.BornFrom.HasValue
+                         || Model.BornTo.HasValue
+                         || Model.RoleFilter.HasValue;
+        }
+        @if (hasFilter)
+        {
+            <text>No users match the current filters.</text>
+        }
+        else
+        {
+            <text>No guests or hosts in the system.</text>
+        }
+    </p>
+}
+else
+{
+    <table class="res-table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>
+                    <a href="@Url.Action("Index", new { firstName = Model.SearchFirstName, lastName = Model.SearchLastName, bornFrom = bornFromStr, bornTo = bornToStr, role = Model.RoleFilter, sortBy = "firstName", sortDir = (Model.SortBy == "firstName" && Model.SortDir == "asc") ? "desc" : "asc" })">
+                        First name@(Model.SortBy == "firstName" ? (Model.SortDir == "asc" ? " (asc)" : " (desc)") : "")
+                    </a>
+                </th>
+                <th>Last name</th>
+                <th>Email</th>
+                <th>
+                    <a href="@Url.Action("Index", new { firstName = Model.SearchFirstName, lastName = Model.SearchLastName, bornFrom = bornFromStr, bornTo = bornToStr, role = Model.RoleFilter, sortBy = "dob", sortDir = (Model.SortBy == "dob" && Model.SortDir == "asc") ? "desc" : "asc" })">
+                        Date of birth@(Model.SortBy == "dob" ? (Model.SortDir == "asc" ? " (asc)" : " (desc)") : "")
+                    </a>
+                </th>
+                <th>
+                    <a href="@Url.Action("Index", new { firstName = Model.SearchFirstName, lastName = Model.SearchLastName, bornFrom = bornFromStr, bornTo = bornToStr, role = Model.RoleFilter, sortBy = "role", sortDir = (Model.SortBy == "role" && Model.SortDir == "asc") ? "desc" : "asc" })">
+                        Role@(Model.SortBy == "role" ? (Model.SortDir == "asc" ? " (asc)" : " (desc)") : "")
+                    </a>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var u in Model.Items)
+            {
+                <tr>
+                    <td>@u.Username</td>
+                    <td>@u.FirstName</td>
+                    <td>@u.LastName</td>
+                    <td>@u.Email</td>
+                    <td>@u.DateOfBirth</td>
+                    <td>@u.Role</td>
+                    <td>
+                        <div class="row-actions">
+                            <a class="btn-details" href="@Url.Action("Edit", new { username = u.Username })">Edit</a>
+                            @using (Html.BeginForm("Delete", "AdminUsers", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="username" value="@u.Username" />
+                                <button type="submit" class="btn-cancel">Delete</button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

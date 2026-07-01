@@ -1,0 +1,764 @@
+/* ===== BookingSystem - sopstveni osnovni stil (bez frameworka) ===== */
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #2b2b2b;
+    background-color: #f4f6f8;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+a {
+    color: #be123c;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Kontejner */
+.container {
+    width: 100%;
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Zaglavlje */
+.site-header {
+    background-color: #4c0519;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.header-left {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+}
+
+.brand {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.brand:hover {
+    color: #fecdd3;
+    text-decoration: none;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 22px;
+}
+
+.main-nav a {
+    color: #fecdd3;
+    font-weight: 600;
+}
+
+.main-nav a:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* Sadrzaj */
+.content {
+    flex: 1 0 auto;
+    padding-top: 32px;
+    padding-bottom: 32px;
+}
+
+.home-hero {
+    background-color: #ffffff;
+    border: 1px solid #e1e6eb;
+    border-radius: 8px;
+    padding: 40px;
+}
+
+.home-hero h1 {
+    font-size: 30px;
+    margin-bottom: 12px;
+    color: #4c0519;
+}
+
+.home-hero p {
+    color: #4a5568;
+    max-width: 640px;
+}
+
+/* Podnozje */
+.site-footer {
+    background-color: #4c0519;
+    color: #c9d4e3;
+    flex-shrink: 0;
+}
+
+.site-footer .container {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.site-footer p {
+    font-size: 14px;
+    text-align: center;
+}
+
+/* ===== Forme (auth) ===== */
+.form-card {
+    background-color: #ffffff;
+    border: 1px solid #e1e6eb;
+    border-radius: 8px;
+    padding: 32px;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.form-card h1 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #4c0519;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #2b2b2b;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 15px;
+    border: 1px solid #c7d0da;
+    border-radius: 6px;
+    background-color: #ffffff;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #be123c;
+    box-shadow: 0 0 0 2px rgba(190, 18, 60, 0.15);
+}
+
+.btn-primary {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 11px 22px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #be123c;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #9f1239;
+}
+
+.validation-summary {
+    color: #b22222;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.field-error {
+    display: block;
+    margin-top: 4px;
+    color: #b22222;
+    font-size: 13px;
+}
+
+.nav-greeting {
+    color: #fecdd3;
+    font-weight: 600;
+}
+
+.form-success {
+    background-color: #e6f4ea;
+    border: 1px solid #a3d9b1;
+    color: #1e7d34;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+/* ===== Hero banner (home) ===== */
+.hero-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.hero-icon {
+    display: flex;
+    align-items: center;
+}
+
+.hero-title {
+    font-size: 26px;
+    color: #4c0519;
+    font-weight: 700;
+}
+
+/* ===== Pretraga + kartice (home) ===== */
+.search-bar {
+    background-color: #ffffff;
+    border: 1px solid #e1e6eb;
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 24px;
+}
+
+.search-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.search-fields .form-input {
+    width: auto;
+    flex: 1 1 150px;
+    min-width: 120px;
+}
+
+.search-fields .btn-primary {
+    margin-top: 0;
+    flex: 0 0 auto;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.acc-card {
+    background-color: #ffffff;
+    border: 1px solid #e1e6eb;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background-color: #f4d0d6;
+    display: block;
+}
+
+.card-body {
+    padding: 14px 16px;
+}
+
+.card-body h3 {
+    font-size: 18px;
+    margin-bottom: 6px;
+    color: #4c0519;
+}
+
+.card-meta {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.card-price {
+    font-weight: 700;
+    color: #be123c;
+    margin-bottom: 4px;
+}
+
+.card-guests {
+    font-size: 14px;
+    color: #4a5568;
+}
+
+.no-results {
+    background-color: #ffffff;
+    border: 1px solid #e1e6eb;
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    color: #6b7280;
+}
+
+/* Custom caret za select polja (nativna strelica skrivena) */
+select.form-input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%23555555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1l5 5 5-5'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 12px;
+    padding-right: 38px;
+    cursor: pointer;
+}
+
+/* ===== Detalj objekta + reserve forma ===== */
+.detail-card {
+    background-color: #ffffff;
+    border: 1px solid #e1e6eb;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.detail-image {
+    width: 100%;
+    max-height: 360px;
+    object-fit: cover;
+    background-color: #f4d0d6;
+    display: block;
+}
+
+.detail-body {
+    padding: 20px 24px;
+}
+
+.detail-body h1 {
+    font-size: 28px;
+    color: #4c0519;
+    margin-bottom: 8px;
+}
+
+.detail-meta {
+    color: #6b7280;
+    font-size: 15px;
+    margin-bottom: 14px;
+}
+
+.detail-desc {
+    color: #2b2b2b;
+    margin-bottom: 16px;
+}
+
+.detail-facts {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+}
+
+.detail-facts li {
+    color: #4a5568;
+}
+
+.reserve-card {
+    background-color: #ffffff;
+    border: 1px solid #e1e6eb;
+    border-radius: 8px;
+    padding: 24px;
+    max-width: 480px;
+}
+
+.reserve-card h2 {
+    font-size: 22px;
+    color: #4c0519;
+    margin-bottom: 16px;
+}
+
+.reserve-note {
+    color: #6b7280;
+}
+
+.btn-details {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #be123c;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.btn-details:hover {
+    background-color: #9f1239;
+    text-decoration: none;
+}
+
+/* ===== My reservations (lista + statusi) ===== */
+.filter-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-bar .form-input {
+    width: auto;
+    min-width: 160px;
+}
+
+.filter-bar .btn-primary {
+    margin-top: 0;
+}
+
+.res-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border: 1px solid #e1e6eb;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.res-table th,
+.res-table td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid #eef1f4;
+}
+
+.res-table th {
+    background-color: #f4f6f8;
+    color: #4c0519;
+    font-size: 14px;
+}
+
+.res-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-created {
+    background-color: #fce7f3;
+    color: #9f1239;
+}
+
+.status-approved {
+    background-color: #e6f4ea;
+    color: #1e7d34;
+}
+
+.status-cancelled {
+    background-color: #fdeaea;
+    color: #b22222;
+}
+
+.status-completed {
+    background-color: #eceef1;
+    color: #4a5568;
+}
+
+.status-available {
+    background-color: #e6f4ea;
+    color: #1e7d34;
+}
+
+.status-unavailable {
+    background-color: #fdeaea;
+    color: #b22222;
+}
+
+.status-rejected {
+    background-color: #fdeaea;
+    color: #b22222;
+}
+
+.btn-cancel {
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #b22222;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    background-color: #8f1b1b;
+}
+
+/* ===== Recenzije ===== */
+.reviews-card {
+    background-color: #ffffff;
+    border: 1px solid #e1e6eb;
+    border-radius: 8px;
+    padding: 24px;
+    margin-top: 24px;
+}
+
+.reviews-card h2 {
+    font-size: 22px;
+    color: #4c0519;
+    margin-bottom: 12px;
+}
+
+.reviews-avg {
+    font-weight: 700;
+    color: #be123c;
+    margin-bottom: 16px;
+}
+
+.review-item {
+    border-top: 1px solid #eef1f4;
+    padding: 12px 0;
+}
+
+.review-item:first-of-type {
+    border-top: none;
+}
+
+.review-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+    color: #4c0519;
+}
+
+.review-rating {
+    font-weight: 700;
+    color: #be123c;
+}
+
+.review-content {
+    color: #2b2b2b;
+    margin-bottom: 4px;
+}
+
+.review-author {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.review-target {
+    color: #6b7280;
+    margin-bottom: 16px;
+}
+
+.review-image {
+    max-width: 120px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    display: block;
+    border: 1px solid #c7d0da;
+}
+
+.review-thumb {
+    max-width: 60px;
+    border-radius: 4px;
+    margin-top: 4px;
+    border: 1px solid #c7d0da;
+}
+
+textarea.form-input {
+    resize: vertical;
+    font-family: inherit;
+}
+
+/* Akciona dugmad u My reservations tabeli */
+.row-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+}
+
+.row-actions form {
+    margin: 0;
+}
+
+.row-actions .btn-details,
+.row-actions .btn-cancel {
+    margin-top: 0;
+    min-width: 120px;
+    padding: 7px 12px;
+    font-size: 13px;
+    text-align: center;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+/* ===== Profil ===== */
+.profile-card {
+    background-color: #ffffff;
+    border: 1px solid #e1e6eb;
+    border-radius: 8px;
+    padding: 24px;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.profile-card h1 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #4c0519;
+}
+
+.profile-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eef1f4;
+}
+
+.profile-row:last-of-type {
+    border-bottom: none;
+}
+
+.profile-label {
+    font-weight: 600;
+    color: #4c0519;
+}
+
+.profile-value {
+    color: #2b2b2b;
+    text-align: right;
+}
+
+/* Sekundarno dugme + red akcija u formi */
+.btn-secondary {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 11px 22px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #4c0519;
+    background-color: #e7ebf0;
+    border: 1px solid #c7d0da;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background-color: #d7dee7;
+    text-decoration: none;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.form-actions .btn-primary,
+.form-actions .btn-secondary {
+    margin-top: 0;
+}
+
+/* ===== Host accommodations ===== */
+.file-input {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.current-image-preview {
+    max-width: 240px;
+    max-height: 160px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    display: block;
+    border: 1px solid #c7d0da;
+}
+
+.disabled-banner {
+    background-color: #fff8e1;
+    border: 1px solid #f0d878;
+    color: #8a6d00;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.res-table th a {
+    color: #4c0519;
+    text-decoration: none;
+}
+
+.res-table th a:hover {
+    text-decoration: underline;
+}
+
+.res-table form {
+    margin: 0;
+    display: inline-block;
+}
+
+.row-actions .btn-cancel[disabled],
+.row-actions .btn-cancel:disabled {
+    background-color: #c7d0da;
+    cursor: not-allowed;
+}
+
+.row-actions .btn-cancel[disabled]:hover,
+.row-actions .btn-cancel:disabled:hover {
+    background-color: #c7d0da;
+}
+
+/* ===== Admin: wider filter bar (5 search fields + buttons) ===== */
+.filter-bar-wide {
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.filter-bar-wide .form-input {
+    width: auto;
+    flex: 1 1 140px;
+    min-width: 120px;
+}
+
+/* ===== Page-level headings (list pages without a card wrapper) ===== */
+.content > h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #4c0519;
+}

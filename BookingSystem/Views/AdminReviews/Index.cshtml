@@ -1,0 +1,94 @@
+@model BookingSystem.ViewModels.AdminReviewsViewModel
+@{
+    ViewBag.Title = "Reviews";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="form-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="validation-summary">@TempData["Error"]</div>
+}
+
+<h1>Reviews</h1>
+
+<section class="filter-bar">
+    @using (Html.BeginForm("Index", "AdminReviews", FormMethod.Get))
+    {
+        @Html.EnumDropDownListFor(m => m.StatusFilter, "All statuses", new { @class = "form-input" })
+        <button type="submit" class="btn-primary">Filter</button>
+    }
+</section>
+
+@if (!Model.Items.Any())
+{
+    <p class="no-results">
+        @if (Model.StatusFilter.HasValue)
+        {
+            <text>No reviews match the selected status.</text>
+        }
+        else
+        {
+            <text>No reviews in the system.</text>
+        }
+    </p>
+}
+else
+{
+    <table class="res-table">
+        <thead>
+            <tr>
+                <th>Accommodation</th>
+                <th>Reviewer</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Rating</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var it in Model.Items)
+            {
+                <tr>
+                    <td>@it.AccommodationName</td>
+                    <td>@it.Review.ReviewerUsername</td>
+                    <td>
+                        @it.Review.Title
+                        @if (!string.IsNullOrEmpty(it.Review.Image))
+                        {
+                            <br /><img class="review-thumb"
+                                       src="@Url.Content("~/Content/images/" + it.Review.Image)"
+                                       alt="image"
+                                       onerror="this.onerror=null;this.src='@Url.Content("~/Content/images/placeholder.jpg")';" />
+                        }
+                    </td>
+                    <td>@it.Review.Content</td>
+                    <td>@it.Review.Rating / 5</td>
+                    <td><span class="status-badge status-@(it.Review.Status.ToString().ToLower())">@it.Review.Status</span></td>
+                    <td>
+                        <div class="row-actions">
+                        @if (it.CanModerate)
+                        {
+                            using (Html.BeginForm("Approve", "AdminReviews", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@it.Review.Id" />
+                                <button type="submit" class="btn-primary">Approve</button>
+                            }
+                            using (Html.BeginForm("Reject", "AdminReviews", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@it.Review.Id" />
+                                <button type="submit" class="btn-cancel">Reject</button>
+                            }
+                        }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

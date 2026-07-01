@@ -1,0 +1,27 @@
+@model BookingSystem.ViewModels.ProfileViewModel
+@{
+    ViewBag.Title = "My profile";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="form-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="validation-summary">@TempData["Error"]</div>
+}
+
+<section class="profile-card">
+    <h1>My profile</h1>
+
+    <div class="profile-row"><span class="profile-label">Username</span><span class="profile-value">@Model.Username</span></div>
+    <div class="profile-row"><span class="profile-label">Role</span><span class="profile-value">@Model.Role</span></div>
+    <div class="profile-row"><span class="profile-label">First name</span><span class="profile-value">@Model.FirstName</span></div>
+    <div class="profile-row"><span class="profile-label">Last name</span><span class="profile-value">@Model.LastName</span></div>
+    <div class="profile-row"><span class="profile-label">Email</span><span class="profile-value">@Model.Email</span></div>
+    <div class="profile-row"><span class="profile-label">Date of birth</span><span class="profile-value">@Model.DateOfBirth</span></div>
+    <div class="profile-row"><span class="profile-label">Gender</span><span class="profile-value">@Model.Gender</span></div>
+
+    <a class="btn-details" href="@Url.Action("Edit", "Profile")">Edit profile</a>
+</section>

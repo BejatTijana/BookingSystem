@@ -1,0 +1,86 @@
+@model BookingSystem.ViewModels.AdminAccommodationFormViewModel
+@{
+    ViewBag.Title = "Edit accommodation";
+    string imgSrc = string.IsNullOrEmpty(Model.ExistingImage)
+        ? Url.Content("~/Content/images/placeholder.jpg")
+        : Url.Content("~/Content/images/" + Model.ExistingImage);
+}
+
+<section class="form-card">
+    <h1>Edit accommodation</h1>
+
+    <div class="profile-row"><span class="profile-label">Host</span><span class="profile-value">@Model.HostUsername</span></div>
+    <div class="profile-row"><span class="profile-label">Posted</span><span class="profile-value">@Model.PostingDate</span></div>
+
+    <img class="current-image-preview"
+         src="@imgSrc"
+         alt="@Model.Name"
+         onerror="this.onerror=null;this.src='@Url.Content("~/Content/images/placeholder.jpg")';" />
+
+    @using (Html.BeginForm("Edit", "AdminAccommodations", new { id = Model.Id }, FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "novalidate" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "validation-summary" })
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.ExistingImage)
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name)
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-input" })
+            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "field-error" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Type)
+            @Html.EnumDropDownListFor(m => m.Type, new { @class = "form-input" })
+            @Html.ValidationMessageFor(m => m.Type, "", new { @class = "field-error" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Description)
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-input", rows = 4 })
+            @Html.ValidationMessageFor(m => m.Description, "", new { @class = "field-error" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address)
+            @Html.TextBoxFor(m => m.Address, new { @class = "form-input" })
+            @Html.ValidationMessageFor(m => m.Address, "", new { @class = "field-error" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.City)
+            @Html.TextBoxFor(m => m.City, new { @class = "form-input" })
+            @Html.ValidationMessageFor(m => m.City, "", new { @class = "field-error" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.PricePerNight)
+            @Html.TextBoxFor(m => m.PricePerNight, new { @class = "form-input", type = "number", step = "0.01", min = "0" })
+            @Html.ValidationMessageFor(m => m.PricePerNight, "", new { @class = "field-error" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.MaxGuests)
+            @Html.TextBoxFor(m => m.MaxGuests, new { @class = "form-input", type = "number", step = "1", min = "1" })
+            @Html.ValidationMessageFor(m => m.MaxGuests, "", new { @class = "field-error" })
+        </div>
+
+        <div class="form-group">
+            <label>
+                @Html.CheckBoxFor(m => m.IsAvailable)
+                Available
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="imageFile">Replace image (optional, .jpg .jpeg .png, max 2 MB)</label>
+            <input type="file" name="imageFile" id="imageFile" accept=".jpg,.jpeg,.png" class="form-input file-input" />
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">Save changes</button>
+            <a class="btn-secondary" href="@Url.Action("Index")">Cancel</a>
+        </div>
+    }
+</section>

@@ -1,0 +1,56 @@
+@model BookingSystem.ViewModels.ReviewFormViewModel
+@{
+    var isEdit = Model.Id.HasValue;
+    var formAction = isEdit ? "Edit" : "Create";
+}
+
+<section class="form-card">
+    <h1>@(isEdit ? "Edit review" : "Leave a review")</h1>
+    <p class="review-target">Accommodation: <strong>@Model.AccommodationName</strong></p>
+
+    @using (Html.BeginForm(formAction, "Reviews", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "novalidate" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "validation-summary" })
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.AccommodationId)
+        @Html.HiddenFor(m => m.ExistingImage)
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Title)
+            @Html.TextBoxFor(m => m.Title, new { @class = "form-input" })
+            @Html.ValidationMessageFor(m => m.Title, "", new { @class = "field-error" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Content)
+            @Html.TextAreaFor(m => m.Content, new { @class = "form-input", rows = 5 })
+            @Html.ValidationMessageFor(m => m.Content, "", new { @class = "field-error" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Rating)
+            @Html.DropDownListFor(m => m.Rating, new SelectList(new[] { 1, 2, 3, 4, 5 }), new { @class = "form-input" })
+            @Html.ValidationMessageFor(m => m.Rating, "", new { @class = "field-error" })
+        </div>
+        @if (isEdit && !string.IsNullOrEmpty(Model.ExistingImage))
+        {
+            <div class="form-group">
+                <label>Current image</label>
+                <img class="current-image-preview"
+                     src="@Url.Content("~/Content/images/" + Model.ExistingImage)"
+                     alt="current review image"
+                     onerror="this.onerror=null;this.src='@Url.Content("~/Content/images/placeholder.jpg")';" />
+                <p class="review-target">Leave empty to keep current image.</p>
+            </div>
+        }
+
+        <div class="form-group">
+            <label for="imageFile">Attach image (optional, .jpg .jpeg .png, max 2 MB)</label>
+            <input type="file" name="imageFile" id="imageFile" accept=".jpg,.jpeg,.png" class="form-input file-input" />
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">@(isEdit ? "Update review" : "Submit review")</button>
+            <a class="btn-secondary" href="@Url.Action("Index", "Reservations")">Cancel</a>
+        </div>
+    }
+</section>
